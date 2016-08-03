@@ -62,29 +62,3 @@ def url_to_df(url):
 
 
 # url = "https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"
-# urls = ["https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data",
-        # "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"]
-# r = url_to_csv(url, "test1.csv")
-# fnames = ['test1.csv', 'test2.csv']
-# print batch_url_to_csv(urls, fnames)
-# result = url_to_df(url)
-# print result
-# x = url_to_csv(url, 'test.csv')
-# print x
-# p = pd.DataFrame.from_csv(x)
-# print type(p)
-# result = url_to_df(url)
-# print type(result)
-# url = 'http://stackoverflow.com/questions/19557801/how-to-make-a-function-that-check-if-the-csv-file-is-valid-or-not-python'
-# u = 'Http://hi.com '
-# url_to_csv(u, "test3.csv")
-# uu = 'https://archive.ics.uci.edu/ml/machine-learning-databases/arrhythmia/arrhythmia.data'
-# url_to_csv(uu, "test4.csv")
-# uuu = 'http://stackoverflow.com/questions/19557801/how-to-make-a-function-that-check-if-the-csv-file-is-valid-or-not-python'
-# print url_to_csv(uuu, "test5.csv")
-# content = csv.reader('test5.csv')
-# with open('test5.csv') as f:
-#     content = csv.reader(f)
-#     for row in content:
-#         if len(row) == 0:
-#             raise TypeError
