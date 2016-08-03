@@ -1,6 +1,7 @@
 import urllib2
 import pandas as pd
 import os
+import csv
 
 
 def url_to_csv(url, fname):
@@ -10,11 +11,20 @@ def url_to_csv(url, fname):
     :param fname: file name to save the data in the url
     :return: None
     """
-    connection = urllib2.urlopen(url)
-    data = connection.read()
-    with open(fname, 'wb') as csvFile:
-        result = csvFile.write(data)
-    return result
+    try:
+        connection = urllib2.urlopen(url)
+        data = connection.read()
+        with open(fname, 'wb') as csvFile:
+            csvFile.write(data)
+        with open(fname, 'r') as f:
+            content = csv.reader(f)
+            for row in content:
+                if len(row) != 0:
+                    continue
+                else:
+                    raise TypeError
+    except urllib2.URLError, e:
+        return e.args
 
 
 def batch_url_to_csv(urls, fnames):
@@ -65,3 +75,16 @@ def url_to_df(url):
 # print type(p)
 # result = url_to_df(url)
 # print type(result)
+# url = 'http://stackoverflow.com/questions/19557801/how-to-make-a-function-that-check-if-the-csv-file-is-valid-or-not-python'
+# u = 'Http://hi.com '
+# url_to_csv(u, "test3.csv")
+# uu = 'https://archive.ics.uci.edu/ml/machine-learning-databases/arrhythmia/arrhythmia.data'
+# url_to_csv(uu, "test4.csv")
+# uuu = 'http://stackoverflow.com/questions/19557801/how-to-make-a-function-that-check-if-the-csv-file-is-valid-or-not-python'
+# print url_to_csv(uuu, "test5.csv")
+# content = csv.reader('test5.csv')
+# with open('test5.csv') as f:
+#     content = csv.reader(f)
+#     for row in content:
+#         if len(row) == 0:
+#             raise TypeError
