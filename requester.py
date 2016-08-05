@@ -81,7 +81,7 @@ def url_to_df(url):
     :param url: A URL
     :return: Pandas DataFrame
     """
-    fname = 'test.csv'
+    fname = 'pandas.csv'
     url_to_csv(url, fname)
     df = pd.read_csv(fname, header=None)
     return df
@@ -90,12 +90,6 @@ def url_to_df(url):
 
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"
 f = 'pandas'
-# df = url_to_df(url)
-# print len(df)
-# url_to_csv(url, f)
-# with open(f, 'r') as c:
-#     line_num = len(c.readlines())
-# print line_num
 
 urls = ['hi',
         'https://archive.ics.uci.edu/ml/machine-learning-databases/audiology/audiology.data',
@@ -123,7 +117,7 @@ two_fnames = ['g', 'h']
 all_fnames = six_fnames + two_fnames
 duplicate_urls = [url] + [url]
 # print len(duplicate_urls)
-# print batch_url_to_csv(csv_urls, six_fnames)
+# print batch_url_to_csv([invalid_csv_urls[0]], [six_fnames[0]])
 # print batch_url_to_csv(invalid_csv_urls, two_fnames)
 # print url_to_df('https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data')
 # def fxn():
@@ -134,11 +128,13 @@ duplicate_urls = [url] + [url]
 # print fxn()
 # with warnings.catch_warnings(record=True) as w:
 #     warnings.simplefilter('always')
-#     batch_url_to_csv(wrongUrls, fnames)
-    # fxn()
-    # print w
-    # assert len(w) == 1
-        # assert issubclass(w[-1].category, RuntimeWarning)
+#     batch_url_to_csv(wrongUrls, fnames[:-1])
+#     # fxn()
+#     print len(w)
+#     # assert len(w) == 1
+#     for ww in w:
+#         # print ww.category
+#         print issubclass(ww.category, RuntimeWarning)
 
 # url_to_csv(wrongurl2, fname)
 # print batch_url_to_csv(urls, fnames)
