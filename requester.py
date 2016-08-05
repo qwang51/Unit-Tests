@@ -2,7 +2,6 @@ import urllib2
 import pandas as pd
 import warnings
 import os
-import re
 import csv
 
 
@@ -43,33 +42,34 @@ def batch_url_to_csv(urls, fnames):
     :return: full path of filenames saved
     """
     if len(urls) == len(fnames):
-        i = 0
-        paths = []
-        while i < len(urls):
-            try:
-                connection = urllib2.urlopen(urls[i])
-            except:
-                warnings.warn('Invalid url', RuntimeWarning)
-                pass
-            else:
-                data = connection.read()
-                with open(fnames[i], 'wb') as csvfile:
-                    csvfile.write(data)
-                paths.append(os.path.join(os.getcwd(),fnames[i]))
-                with open(fnames[i], 'r') as f:
-                    dialect = csv.Sniffer().sniff(f.read())
-                    f.seek(0)
-                    delimiter = dialect.delimiter
-                    rows = [line.split(delimiter) for line in f.readlines()]
-                    if all([len(rows[0])==len(elem) for elem in rows]):
-                        pass
-                    else:
-                        warnings.warn('File %d is not CSV format' % i, RuntimeWarning)
-                        os.remove(os.path.join(os.getcwd(),fnames[i]))
-                        paths.remove(os.path.join(os.getcwd(),fnames[i]))
-                        pass
-            i += 1
-        return paths
+        new_urls = set(urls)
+        if len(urls) == len(new_urls):
+            i = 0
+            paths = []
+            while i < len(urls):
+                try:
+                    connection = urllib2.urlopen(urls[i])
+                except:
+                    warnings.warn('URL %d skipped' %i, RuntimeWarning)
+                else:
+                    data = connection.read()
+                    with open(fnames[i], 'wb') as csvfile:
+                        csvfile.write(data)
+                    paths.append(os.path.join(os.getcwd(),fnames[i]))
+                    with open(fnames[i], 'r') as f:
+                        dialect = csv.Sniffer().sniff(f.read())
+                        f.seek(0)
+                        delimiter = dialect.delimiter
+                        rows = [line.split(delimiter) for line in f.readlines()]
+                        if all([len(rows[0])==len(elem) for elem in rows]):
+                            pass
+                        else:
+                            warnings.warn('File %d is not CSV format' % i, RuntimeWarning)
+                            os.remove(os.path.join(os.getcwd(),fnames[i]))
+                            paths.remove(os.path.join(os.getcwd(),fnames[i]))
+                i += 1
+            return paths
+        else: raise AssertionError, "Duplicate URLs cannot be present in the parameter 'urls'."
     else:
         return 'Number of urls and fnames does not match.'
 
@@ -87,19 +87,61 @@ def url_to_df(url):
     return df
 
 
+
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"
-urls = ['https://archive.ics.uci.edu/ml/machine-learning-databases/audiology/audiology.data',
+f = 'pandas'
+# df = url_to_df(url)
+# print len(df)
+# url_to_csv(url, f)
+# with open(f, 'r') as c:
+#     line_num = len(c.readlines())
+# print line_num
+
+urls = ['hi',
+        'https://archive.ics.uci.edu/ml/machine-learning-databases/audiology/audiology.data',
        'https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data',
         'http://www.h.com']
-fnames = ['c1.csv','c2.csv','c3.csv']
+wrongUrls = ['hi','www.google','www.apple.com']
+fnames = ['c1.csv','c2.csv','c3.csv','c4.csv']
 wrongurl1 = 'http://www.google.com'
 wrongurl2 = 'https://archive.ics.uci.edu/ml/machine-learning-databases/audiology/audiology.data'
 wrongurl3 = 'hi'
 fname = 'a.csv'
 commaURL = 'https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/reprocessed.hungarian.data'
 
-# url_to_csv(wrongurl2, fname)
+csv_urls = ['https://archive.ics.uci.edu/ml/machine-learning-databases/letter-recognition/letter-recognition.data',
+            'https://archive.ics.uci.edu/ml/machine-learning-databases/hayes-roth/hayes-roth.data',
+            'https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.va.data',
+            'https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.data',
+            'https://archive.ics.uci.edu/ml/machine-learning-databases/glass/glass.data',
+            'https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/reprocessed.hungarian.data']
+invalid_csv_urls = ['http://stackoverflow.com/questions/19557801/how-to-make-a-function-that-check-if-the-csv-file-is-valid-or-not-python',
+                    'https://archive.ics.uci.edu/ml/machine-learning-databases/audiology/audiology.data']
+all_urls = csv_urls + invalid_csv_urls
+six_fnames = ['a','b','c','d', 'e', 'f']
+two_fnames = ['g', 'h']
+all_fnames = six_fnames + two_fnames
+duplicate_urls = [url] + [url]
+# print len(duplicate_urls)
+# print batch_url_to_csv(csv_urls, six_fnames)
+# print batch_url_to_csv(invalid_csv_urls, two_fnames)
+# print url_to_df('https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data')
+# def fxn():
+#     warnings.warn("deprecated", DeprecationWarning)
+#     warnings.warn("deprecated", DeprecationWarning)
 
+
+# print fxn()
+# with warnings.catch_warnings(record=True) as w:
+#     warnings.simplefilter('always')
+#     batch_url_to_csv(wrongUrls, fnames)
+    # fxn()
+    # print w
+    # assert len(w) == 1
+        # assert issubclass(w[-1].category, RuntimeWarning)
+
+# url_to_csv(wrongurl2, fname)
+# print batch_url_to_csv(urls, fnames)
 
 # for u in urls:
 #     try:
@@ -113,7 +155,7 @@ commaURL = 'https://archive.ics.uci.edu/ml/machine-learning-databases/heart-dise
 #     warnings.warn('Invalid URL', RuntimeWarning)
 # else:
 #     data = connection.read()
-# print batch_url_to_csv(urls, fnames)
+
 # url_to_csv(url, fname)
 
 # with open('edge.csv', 'r') as csvfile:
